@@ -22,5 +22,5 @@
 	
     "SOCKFILE": "/var/lib/haproxy/stats",
 	
-	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts" --need to check
+	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
 }
