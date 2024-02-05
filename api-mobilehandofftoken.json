@@ -1,0 +1,17 @@
+{
+    
+  
+    "NCESERVERS": [
+       "api5-prod.nce.webapps.rr.com",
+       "api6-prod.nce.webapps.rr.com",
+	   "api9-prod.ncw.webapps.rr.com"
+    ],
+	
+    "NCWSERVERS": [
+       "api5-prod.ncw.webapps.rr.com",
+       "api6-prod.ncw.webapps.rr.com",
+	   "api9-prod.ncw.webapps.rr.com"
+    ],
+	
+	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts" 
+}
