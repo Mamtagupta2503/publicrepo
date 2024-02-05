@@ -31,6 +31,6 @@
 		"api-smartsheet-wrapper",
 		"api-smartsheet-context-graphql"
 	],
-    "SOCKFILE": "/data/apps/haproxy/haproxy_sock"
+    "SOCKFILE": "/data/apps/haproxy/haproxy_sock",
 	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts/"
 }
