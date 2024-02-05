@@ -1,0 +1,24 @@
+{
+    "HAPROXY_SERVERS": [
+     "omega-haproxy1-prod.nce.webapps.rr.com"
+    ],
+  
+    "NCESERVERS": [
+        "sr7-prod.nce.corp.chartercom.com"
+    	
+    ],
+    "NCWSERVERS": [
+        "sr7-prod.ncw.corp.chartercom.com"
+    	
+    ],
+    "BACKEND": [
+        "www-svc-api-v2"
+    ],
+	"API" : [
+	    "api_serviceability_context"
+	],
+    "SOCKFILE": "/var/lib/haproxy/stats",
+	
+	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
+
+}
