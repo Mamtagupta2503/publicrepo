@@ -1,0 +1,12 @@
+{
+    "NCESERVERS": [
+        "api1-prod.nce.webapps.rr.com",
+        "api2-prod.nce.webapps.rr.com"
+    ],
+    "NCWSERVERS": [
+		"api1-prod.nce.webapps.rr.com",
+        "api2-prod.nce.webapps.rr.com"    
+	],
+    
+	"DIRECTORY": "/data/apps/api-aem-kafka-producer"
+}

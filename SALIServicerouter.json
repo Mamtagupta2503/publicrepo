@@ -1,0 +1,22 @@
+{
+    "NCESERVERS": [
+		"sr7-prod.nce.webapps.rr.com",
+		"sr8-prod.nce.webapps.rr.com",
+		"sr9-prod.nce.webapps.rr.com",
+		"sr10-prod.nce.webapps.rr.com"
+    ],
+	
+    "NCWSERVERS": [
+		"sr7-prod.nce.webapps.rr.com",
+		"sr8-prod.nce.webapps.rr.com",
+		"sr9-prod.nce.webapps.rr.com",
+		"sr10-prod.nce.webapps.rr.com"
+    ],
+	
+    "BACKEND": [
+        ""	
+    ],
+	
+    "SOCKFILE": "/var/lib/haproxy/stats"
+
+}

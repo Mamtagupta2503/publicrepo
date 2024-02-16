@@ -1,0 +1,24 @@
+{
+    "HAPROXY_SERVERS": [
+		"omega-haproxy1-prod.nce.webapps.rr.com",
+    	"omega-haproxy2-prod.nce.webapps.rr.com",
+        "omega-haproxy1-prod.ncw.webapps.rr.com",
+    	"omega-haproxy2-prod.ncw.webapps.rr.com"
+		],
+  
+    "NCESERVERS": [
+		"sr5-prod.nce.webapps.rr.com",
+		"sr6-prod.nce.webapps.rr.com"
+    ],
+	
+    "NCWSERVERS": [
+		"sr5-prod.nce.webapps.rr.com",
+		"sr6-prod.nce.webapps.rr.com"
+    ],
+	
+    "BACKEND": [
+        "www-api-v2"	
+    ],
+	
+    "SOCKFILE": "/var/lib/haproxy/stats"
+}

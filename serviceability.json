@@ -1,0 +1,55 @@
+{
+    "HAPROXY_SERVERS": [
+     "omega-haproxy1-prod.nce.webapps.rr.com",
+     "omega-haproxy2-prod.nce.webapps.rr.com",
+     "omega-haproxy1-prod.ncw.webapps.rr.com",
+     "omega-haproxy2-prod.ncw.webapps.rr.com"
+    ],
+	"HA_NCE_SERVERS": [
+	"sr7-prod.nce.corp.chartercom.com",
+    "sr8-prod.nce.corp.chartercom.com",
+	"sr9-prod.nce.corp.chartercom.com",
+	"sr10-prod.nce.corp.chartercom.com"
+    ],
+	"HA_NCW_SERVERS": [
+	"sr7-prod.ncw.corp.chartercom.com",
+    "sr8-prod.ncw.corp.chartercom.com",
+	"sr9-prod.ncw.corp.chartercom.com",
+	"sr10-prod.ncw.corp.chartercom.com"
+    ],
+  
+    "NCESERVERS": [
+	"api5-prod.nce.webapps.rr.com",
+    "api6-prod.nce.webapps.rr.com",
+	"api7-prod.nce.webapps.rr.com",
+	"api8-prod.nce.webapps.rr.com",
+	"api9-prod.nce.webapps.rr.com",
+	"api31-prod.nce.corp.chartercom.com",
+	"api32-prod.nce.corp.chartercom.com"
+    ],
+    "NCWSERVERS": [
+	"api5-prod.ncw.webapps.rr.com",
+    "api6-prod.ncw.webapps.rr.com",
+	"api7-prod.ncw.webapps.rr.com",
+	"api8-prod.ncw.webapps.rr.com",
+	"api9-prod.ncw.webapps.rr.com",
+	"api31-prod.ncw.corp.chartercom.com",
+	"api32-prod.ncw.corp.chartercom.com"
+    ],
+	
+    "BACKEND": [
+        "www-svc-api-v2"
+    ],
+	"API" : [
+	    "api-serviceability-context",
+		"api-serviceability-content",
+		"api-serviceability-camunda-bpm",
+		"api-serviceability",
+		"api-serviceability-context-wrapper",
+		"api-serviceability-mobilie-eligibility"
+	],
+    "SOCKFILE": "/var/lib/haproxy/stats",
+	
+	"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
+
+}
