@@ -1,6 +1,7 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
+def user ='jenkins_worker' // svc-ecomorder-oobops
 
 pipeline {
     agent any
@@ -36,7 +37,8 @@ pipeline {
 									println "NCW server are: " + server
 								}
 								for(ha in haproxyservers) {
-									def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+									def SSH_OPTION="ssh $user@${ha} -o StrictHostKeyChecking=no"
+									echo SSH_OPTION
 									for(bknd in backend) {
 										for(s in server) {
 											echo "$action server: ${s} on haproxy: ${ha} backend ${bknd}"
