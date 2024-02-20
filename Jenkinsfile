@@ -2,10 +2,13 @@ def application =params.Application
 def action =params.Action
 def datacenter =params.DC
 
+
 pipeline {
     agent any
 
-    		stage('Parallel execution') {
+    stages {
+
+		stage('Parallel execution') {
 			parallel {
 				stage('serviceability') {
 					when {
