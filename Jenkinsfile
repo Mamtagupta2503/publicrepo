@@ -2,22 +2,10 @@ def application =params.Application
 def action =params.Action
 def datacenter =params.DC
 
-
 pipeline {
     agent any
 
-    stages {
-
-        stage('Pull server details') {
-            steps{
-				println "dc from job parameter : " + datacenter   
-                println "action from job parameter: " + action
-                println "application from job parameter " + application
-				git branch: 'main', poll: false, url: 'https://github.com/Mamtagupta2503/publicrepo.git'
-
-            }
-        }
-		stage('Parallel execution') {
+    		stage('Parallel execution') {
 			parallel {
 				stage('serviceability') {
 					when {
