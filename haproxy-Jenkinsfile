@@ -1,0 +1,269 @@
+def application =params.Application
+def action =params.Action
+def datacenter =params.DC
+
+pipeline {
+    agent any
+
+    stages {
+
+		stage('Parallel execution') {
+			parallel {
+				stage('serviceability') {
+					when {
+						expression {
+						'serviceability' in application||'ALL' in application
+						}
+					}
+					steps {
+						script{
+							try {
+								println "Performing "+ action +" on application serviceability"								
+								def serverdetails = readJSON file: 'Patching_cycle_25_28/serviceability.json'
+								def haproxyservers = serverdetails.HAPROXY_SERVERS 
+								def nceserver = serverdetails.HA_NCE_SERVERS
+								def ncwserver = serverdetails.HA_NCW_SERVERS
+								def backend = serverdetails.BACKEND
+								def sockfileloc = serverdetails.SOCKFILE
+								def server
+
+								if(datacenter =='NCE'){
+									 server = nceserver
+									 println "NCE server are: " + server
+								}
+								else if(datacenter =='NCW'){
+									server = ncwserver
+									println "NCW server are: " + server
+								}
+								for(ha in haproxyservers) {
+									def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+									for(bknd in backend) {
+										for(s in server) {
+											echo "$action server: ${s} on haproxy: ${ha} backend ${bknd}"
+											try{
+												//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+											}catch(Exception e) {
+												catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+													sh "exit 1"
+												}
+											}
+										}
+									}
+								}			
+							}catch(Exception e) {
+								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+								}
+							}
+						}
+					}      
+				}
+				stage('Smartsheet') {
+					when {
+						expression {
+						'Smartsheet' in application||'ALL' in application
+						}
+					}
+				steps {
+					script{
+						try {
+							println "Performing "+ action +" on application serviceability"	
+							def serverdetails = readJSON file: 'Patching_cycle_25_28/smartsheet.json'
+							def haproxyservers = serverdetails.HAPROXY_SERVERS 
+							def nceserver = serverdetails.NCESERVERS
+							def ncwserver = serverdetails.NCWSERVERS
+							def backend = serverdetails.BACKEND
+							def sockfileloc = serverdetails.SOCKFILE
+							def server
+
+							if(datacenter =='NCE'){
+								server = nceserver
+								println "NCE server are: " + server
+							}
+							else if(datacenter =='NCW'){
+								server = ncwserver
+								println "NCW server are: " + server
+
+							}
+
+							for(ha in haproxyservers) {
+								def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+								for(bknd in backend) {
+									for(s in server) {
+										echo "$action server: ${s} on haproxy: ${ha} backend ${bknd}"
+										try{
+											//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"						
+										}catch(Exception e) {
+											catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+												sh "exit 1"
+												}
+											}
+										}
+									}
+								}
+						}catch(Exception e) {
+							result = 'failed'
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}      
+				}
+			}
+				stage('PaymentUI') {
+					when {
+						expression {
+						'PaymentUI' in application||'ALL' in application
+						}
+					}
+				steps{
+					script{
+						try {
+						println "Performing "+ action +" on application PaymentUI"
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/payment-ui.json'
+						def haproxyservers = serverdetails.HAPROXY_SERVERS 
+						def nceserver = serverdetails.NCESERVERS
+						def ncwserver = serverdetails.NCWSERVERS
+						def backend = serverdetails.BACKEND
+						def sockfileloc = serverdetails.SOCKFILE
+						def server
+
+						if(datacenter =='NCE'){
+							server = nceserver
+							println "NCE server are: " + server
+						}
+						else if(datacenter =='NCW'){
+							server = ncwserver
+							println "NCW server are: " + server
+						}
+
+						for(ha in haproxyservers) {
+							def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+							for(bknd in backend) {
+								for(s in server) {
+									echo "$ACTION server: ${s} on haproxy: ${ha} backend ${bknd}"
+									try{
+									//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+									}catch(Exception e) {
+										catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+											sh "exit 1"
+										}
+									}
+							   }
+							}
+						}
+						}catch(Exception e) {
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}    
+				}
+			}
+				stage('OOBServiceRouter') {
+					when {
+					expression {
+					'OOBServiceRouter' in application||'ALL' in application
+
+					}
+					}
+				steps {
+					script{
+						println "Performing "+ action +" on application OOBServiceRouter"
+						try {  
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/OOBServiceRouter.json'
+						def haproxyservers = serverdetails.HAPROXY_SERVERS 
+						def nceserver = serverdetails.NCESERVERS
+						def ncwserver = serverdetails.NCWSERVERS
+						def backend = serverdetails.BACKEND
+						def sockfileloc = serverdetails.SOCKFILE
+						def server
+
+						if(datacenter =='NCE'){
+							server = nceserver
+							println "NCE server are: " + server
+						}
+						else if(datacenter =='NCW'){
+							server = ncwserver
+							println "NCW server are: " + server
+						}
+
+						for(ha in haproxyservers) {
+							def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+							for(bknd in backend) {
+								for(s in server) {
+									echo "$action server: ${s} on haproxy: ${ha} backend ${bknd}"
+									try{
+									//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+									}catch(Exception e) {
+										catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+											sh "exit 1"
+										}
+									}
+								}
+							}
+						}
+						}catch(Exception e) {
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}
+				}      
+			}
+				stage('MTG Pub-UI') {
+					when {
+					expression {
+					'MTG Pub-UI' in application||'ALL' in application
+
+					}
+					}
+				steps {
+					script{
+						try {  
+						println "Performing "+ action +" on application MTG Pub-UI/mobiletokenui"
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/mobiletokenui.json'
+						def haproxyservers = serverdetails.HAPROXY_SERVERS 
+						def nceserver = serverdetails.NCESERVERS
+						def ncwserver = serverdetails.NCWSERVERS
+						def backend = serverdetails.BACKEND
+						def sockfileloc = serverdetails.SOCKFILE
+						def server
+
+						if(datacenter =='NCE'){
+							server = nceserver
+							println "NCE server are: " + server
+						}
+						else if(datacenter =='NCW'){
+							server = ncwserver
+							println "NCW server are: " + server
+						}
+
+						for(ha in haproxyservers) {
+							def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+							for(bknd in backend) {
+								for(s in server) {
+									echo "$ACTION server: ${s} on haproxy: ${ha} backend ${bknd}"
+									try{
+									//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+									}catch(Exception e) {
+										catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+											sh "exit 1"
+										}
+									}
+								}
+							}
+								
+						}
+						}catch(Exception e) {
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}
+				}      
+			}
+			} 
+		}	 
+    }   
+}
