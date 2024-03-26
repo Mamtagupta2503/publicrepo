@@ -31,9 +31,9 @@ pipeline {
 								def ncwserver = serverdetails.HA_NCW_SERVERS
 								def backend = serverdetails.BACKEND
 								def sockfileloc = serverdetails.SOCKFILE
+								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
 								def server
 
-								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
 								if(application =='ALL') {
 									if(datacenter =='NCE'){
 										server = nceserver
@@ -46,6 +46,7 @@ pipeline {
 								}
 								else 
 									server = haproxyserversfromparamArray
+								
 								def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
 								publishresults = publishresults + "serviceability: " + result+ "\n"
 											
@@ -76,21 +77,40 @@ pipeline {
 								def ncebackend = serverdetails.NCEBACKEND
 								def ncwbackend = serverdetails.NCWBACKEND
 								def sockfileloc = serverdetails.SOCKFILE
+								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
 								def server
 								def backend
-
+								
+								if(application =='ALL') {
+									if(datacenter =='NCE'){
+										 server = nceserver
+										 backend =ncebackend
+										 println "NCE server are: " + server
+										 println "NCE backend is: " + backend
+									}
+									else if(datacenter =='NCW'){
+										server = ncwserver
+										backend =ncwbackend
+										println "NCW server are: " + server
+										println "NCW backend is: " + backend
+									}
+								}
+								
+								else 
+								{	
 								if(datacenter =='NCE'){
-									 server = nceserver
-									 backend =ncebackend
-									 println "NCE server are: " + server
-									 println "NCE backend is: " + backend
-								}
-								else if(datacenter =='NCW'){
-									server = ncwserver
-									backend =ncwbackend
-									println "NCW server are: " + server
-									println "NCW backend is: " + backend
-								}
+										 server = server = haproxyserversfromparamArray
+										 backend =ncebackend
+										 println "NCE server are: " + haproxyserversfromparamArray
+										 println "NCE backend is: " + backend
+									}
+									else if(datacenter =='NCW'){
+										server = server = haproxyserversfromparamArray
+										backend =ncwbackend
+										println "NCW server are: " + haproxyserversfromparamArray
+										println "NCW backend is: " + backend
+									}	
+								}	
 								def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
 								publishresults = publishresults + "llm-token-generator: " + result+ "\n"
 								
@@ -121,8 +141,9 @@ pipeline {
 							def ncwserver = serverdetails.NCWSERVERS
 							def backend = serverdetails.BACKEND
 							def sockfileloc = serverdetails.SOCKFILE
-							def server
 							def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
+							def server
+							
 							if(application =='ALL') {
 								if(datacenter =='NCE'){
 									server = nceserver
@@ -165,16 +186,21 @@ pipeline {
 						def ncwserver = serverdetails.NCWSERVERS
 						def backend = serverdetails.BACKEND
 						def sockfileloc = serverdetails.SOCKFILE
+						def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
 						def server
 
-						if(datacenter =='NCE'){
-							server = nceserver
-							println "NCE server are: " + server
+						if(application =='ALL') {
+							if(datacenter =='NCE'){
+								server = nceserver
+								println "NCE server are: " + server
+							}
+							else if(datacenter =='NCW'){
+								server = ncwserver
+								println "NCW server are: " + server
+							}
 						}
-						else if(datacenter =='NCW'){
-							server = ncwserver
-							println "NCW server are: " + server
-						}
+						else 
+							server = haproxyserversfromparamArray
 
 						def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
 						publishresults = publishresults + "PaymentUI: " + result+ "\n"
@@ -206,16 +232,21 @@ pipeline {
 						def ncwserver = serverdetails.NCWSERVERS
 						def backend = serverdetails.BACKEND
 						def sockfileloc = serverdetails.SOCKFILE
+						def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
 						def server
 
-						if(datacenter =='NCE'){
-							server = nceserver
-							println "NCE server are: " + server
+						if(application =='ALL') {
+							if(datacenter =='NCE'){
+								server = nceserver
+								println "NCE server are: " + server
+							}
+							else if(datacenter =='NCW'){
+								server = ncwserver
+								println "NCW server are: " + server
+							}
 						}
-						else if(datacenter =='NCW'){
-							server = ncwserver
-							println "NCW server are: " + server
-						}
+						else 
+							server = haproxyserversfromparamArray
 
 						def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
 						publishresults = publishresults + "OOBServiceRouter: " + result+ "\n"
@@ -247,16 +278,21 @@ pipeline {
 						def ncwserver = serverdetails.NCWSERVERS
 						def backend = serverdetails.BACKEND
 						def sockfileloc = serverdetails.SOCKFILE
+						def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
 						def server
 
-						if(datacenter =='NCE'){
-							server = nceserver
-							println "NCE server are: " + server
+						if(application =='ALL') {
+							if(datacenter =='NCE'){
+								server = nceserver
+								println "NCE server are: " + server
+							}
+							else if(datacenter =='NCW'){
+								server = ncwserver
+								println "NCW server are: " + server
+							}
 						}
-						else if(datacenter =='NCW'){
-							server = ncwserver
-							println "NCW server are: " + server
-						}
+						else 
+							server = haproxyserversfromparamArray
 
 						def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
 						publishresults = publishresults + "MobileTokenUI: " + result+ "\n"
