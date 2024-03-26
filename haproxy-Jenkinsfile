@@ -1,0 +1,289 @@
+def application =params.Application
+def action =params.Action
+def datacenter =params.DC
+def publishresults=''
+def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
+
+
+
+pipeline {
+    agent any
+
+    stages {
+
+		stage('Parallel execution') {
+			parallel {
+				stage('serviceability') {
+					when {
+						expression {
+						'serviceability' in application||'ALL' in application
+						}
+					}
+					steps {
+						script{
+							try {
+								println "Performing "+ action +" on application serviceability"								
+								def serverdetails = readJSON file: 'Patching_cycle_25_28/serviceability.json'
+								def haproxyservers = serverdetails.HAPROXY_SERVERS 
+								def nceserver = serverdetails.HA_NCE_SERVERS
+								def ncwserver = serverdetails.HA_NCW_SERVERS
+								def backend = serverdetails.BACKEND
+								def sockfileloc = serverdetails.SOCKFILE
+								def server
+
+								if(datacenter =='NCE'){
+									 server = nceserver
+									 println "NCE server are: " + server
+								}
+								else if(datacenter =='NCW'){
+									server = ncwserver
+									println "NCW server are: " + server
+								}
+								def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
+								publishresults = publishresults + "serviceability: " + result+ "\n"
+											
+							}catch(Exception e) {
+								//def Serviceability ='Failed'
+								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+								}
+							}
+						}
+					}      
+				}
+				stage('llm-token-generator') {
+					when {
+						expression {
+						'llm-token-generator' in application||'ALL' in application
+						}
+					}
+					steps {
+						script{
+							try {
+								println "Performing "+ action +" on application llm-token-generator"								
+								def serverdetails = readJSON file: 'Patching_cycle_25_28/llm-token-generator.json'
+								def haproxyservers = serverdetails.HAPROXY_SERVERS 
+								def nceserver = serverdetails.NCESERVERS
+								def ncwserver = serverdetails.NCWSERVERS
+								def ncebackend = serverdetails.NCEBACKEND
+								def ncwbackend = serverdetails.NCWBACKEND
+								def sockfileloc = serverdetails.SOCKFILE
+								def server
+								def backend
+
+								if(datacenter =='NCE'){
+									 server = nceserver
+									 backend =ncebackend
+									 println "NCE server are: " + server
+									 println "NCE backend is: " + backend
+								}
+								else if(datacenter =='NCW'){
+									server = ncwserver
+									backend =ncwbackend
+									println "NCW server are: " + server
+									println "NCW backend is: " + backend
+								}
+								def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
+								publishresults = publishresults + "llm-token-generator: " + result+ "\n"
+								
+								
+							}catch(Exception e) {
+								//llmtokengenerator ='Failed'
+								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+								}
+							}
+						}
+					}      
+				}
+				stage('Smartsheet') {
+					when {
+						expression {
+						'Smartsheet' in application||'ALL' in application
+						}
+					}
+				steps {
+					script{
+						try {
+							println "Performing "+ action +" on application smartsheet"	
+							def serverdetails = readJSON file: 'Patching_cycle_25_28/smartsheet.json'
+							def haproxyservers = serverdetails.HAPROXY_SERVERS 
+							def nceserver = serverdetails.NCESERVERS
+							def ncwserver = serverdetails.NCWSERVERS
+							def backend = serverdetails.BACKEND
+							def sockfileloc = serverdetails.SOCKFILE
+							def server
+
+							if(datacenter =='NCE'){
+								server = nceserver
+								println "NCE server are: " + server
+							}
+							else if(datacenter =='NCW'){
+								server = ncwserver
+								println "NCW server are: " + server
+
+							}
+							def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
+							publishresults = publishresults + "smartsheet: " + result+ "\n"
+
+						}catch(Exception e) {
+							//Smartsheet ='Failed'
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}      
+				}
+			}
+				stage('PaymentUI') {
+					when {
+						expression {
+						'PaymentUI' in application||'ALL' in application
+						}
+					}
+				steps{
+					script{
+						try {
+						println "Performing "+ action +" on application PaymentUI"
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/payment-ui.json'
+						def haproxyservers = serverdetails.HAPROXY_SERVERS 
+						def nceserver = serverdetails.NCESERVERS
+						def ncwserver = serverdetails.NCWSERVERS
+						def backend = serverdetails.BACKEND
+						def sockfileloc = serverdetails.SOCKFILE
+						def server
+
+						if(datacenter =='NCE'){
+							server = nceserver
+							println "NCE server are: " + server
+						}
+						else if(datacenter =='NCW'){
+							server = ncwserver
+							println "NCW server are: " + server
+						}
+
+						def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
+						publishresults = publishresults + "PaymentUI: " + result+ "\n"
+						
+						}catch(Exception e) {
+							//PaymentUI ='Failed'
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}    
+				}
+			}
+				stage('OOBServiceRouter') {
+					when {
+					expression {
+					'OOBServiceRouter' in application||'ALL' in application
+
+					}
+					}
+				steps {
+					script{
+						println "Performing "+ action +" on application OOBServiceRouter"
+						try {  
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/OOBServiceRouter.json'
+						def haproxyservers = serverdetails.HAPROXY_SERVERS 
+						def nceserver = serverdetails.NCESERVERS
+						def ncwserver = serverdetails.NCWSERVERS
+						def backend = serverdetails.BACKEND
+						def sockfileloc = serverdetails.SOCKFILE
+						def server
+
+						if(datacenter =='NCE'){
+							server = nceserver
+							println "NCE server are: " + server
+						}
+						else if(datacenter =='NCW'){
+							server = ncwserver
+							println "NCW server are: " + server
+						}
+
+						def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
+						publishresults = publishresults + "OOBServiceRouter: " + result+ "\n"
+						
+						}catch(Exception e) {
+							//OOBServiceRouter ='Failed'
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}
+				}      
+			}
+				stage('MTG Pub-UI') {
+					when {
+					expression {
+					'MTG Pub-UI' in application||'ALL' in application
+
+					}
+					}
+				steps {
+					script{
+						try {  
+						println "Performing "+ action +" on application MTG Pub-UI/mobiletokenui"
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/mobiletokenui.json'
+						def haproxyservers = serverdetails.HAPROXY_SERVERS 
+						def nceserver = serverdetails.NCESERVERS
+						def ncwserver = serverdetails.NCWSERVERS
+						def backend = serverdetails.BACKEND
+						def sockfileloc = serverdetails.SOCKFILE
+						def server
+
+						if(datacenter =='NCE'){
+							server = nceserver
+							println "NCE server are: " + server
+						}
+						else if(datacenter =='NCW'){
+							server = ncwserver
+							println "NCW server are: " + server
+						}
+
+						def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
+						publishresults = publishresults + "MobileTokenUI: " + result+ "\n"
+						
+						}catch(Exception e) {
+							//MobileTokenUI ='Failed'
+							catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+							}
+						}
+					}
+				}      
+			}
+			} 
+		}	 
+    }
+	post {
+		always {
+			sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
+			message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n StageResult: [${publishresults}] ",
+			spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
+			spaceName: 'MamtaKT']]  
+		}
+	}	 
+}
+def performaction(Object haproxyservers, Object backend, Object server, String action, Object sockfileloc ){
+	def result ='Success'
+	for(ha in haproxyservers) {
+		def SSH_OPTION="ssh jenkins_worker@${ha} -o StrictHostKeyChecking=no"
+		for(bknd in backend) {
+			for(s in server) {
+				echo "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+				try{
+					//sh "$SSH_OPTION 'echo $action server $bknd/$s | sudo socat stdio $sockfileloc'"
+					
+				}catch(Exception e) {
+					result ='Failure'	
+					catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+						sh "exit 1"
+					}
+				}
+			}
+		}
+	}
+	return result
+}
