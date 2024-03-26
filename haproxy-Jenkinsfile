@@ -17,7 +17,7 @@ pipeline {
 				stage('serviceability') {
 					when {
 						expression {
-						'serviceability' in application||'ALL' in application
+						'Serviceability' in application||'ALL' in application
 						}
 					}
 					steps {
@@ -33,14 +33,19 @@ pipeline {
 								def sockfileloc = serverdetails.SOCKFILE
 								def server
 
-								if(datacenter =='NCE'){
-									 server = nceserver
-									 println "NCE server are: " + server
+								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
+								if(application =='ALL') {
+									if(datacenter =='NCE'){
+										server = nceserver
+										println "NCE server are: " + server
+									}
+									else if(datacenter =='NCW'){
+										server = ncwserver
+										println "NCW server are: " + server
+									}
 								}
-								else if(datacenter =='NCW'){
-									server = ncwserver
-									println "NCW server are: " + server
-								}
+								else 
+									server = haproxyserversfromparamArray
 								def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
 								publishresults = publishresults + "serviceability: " + result+ "\n"
 											
@@ -118,17 +123,6 @@ pipeline {
 							def sockfileloc = serverdetails.SOCKFILE
 							def server
 							def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
-							
-							
-							 if(application =='ALL' && datacenter =='NCE'){
-                                    api = allapis
-                                    println "api selected from serviceability.json: " + api
-                                }
-                                else {
-                                    api = apiparamaterarray
-                                    println "api selected from job parameter: " + api
-                                }
-								
 							if(application =='ALL') {
 								if(datacenter =='NCE'){
 									server = nceserver
