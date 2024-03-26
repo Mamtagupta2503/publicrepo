@@ -12,8 +12,8 @@
     ],
 	
     "NCWSERVERS": [
-		"sr5-prod.nce.webapps.rr.com",
-		"sr6-prod.nce.webapps.rr.com"
+		"sr5-prod.ncw.webapps.rr.com",
+		"sr6-prod.ncw.webapps.rr.com"
     ],
 	
     "BACKEND": [
