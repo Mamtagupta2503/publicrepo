@@ -1,0 +1,33 @@
+{   
+"HAPROXY_SERVERS":[
+	"api-haproxy1-prod.nce.webapps.rr.com",
+	"api-haproxy2-prod.nce.webapps.rr.com",
+	"api-haproxy1-prod.ncw.webapps.rr.com",
+	"api-haproxy2-prod.ncw.webapps.rr.com"    
+	],
+"NCESERVERS":[
+	"api5-prod.nce.webapps.rr.com",
+    "api6-prod.nce.webapps.rr.com",
+	"api7-prod.nce.webapps.rr.com",
+	"api8-prod.nce.webapps.rr.com"
+    ],
+"NCWSERVERS":[
+	"api5-prod.ncw.webapps.rr.com",
+    "api6-prod.ncw.webapps.rr.com",
+	"api7-prod.ncw.webapps.rr.com",
+	"api8-prod.ncw.webapps.rr.com"
+    ],
+	
+"API":[
+	"api-llm-token-generator"
+	],
+"NCEBACKEND": [
+        "www-llm-token-generator-nce"
+    ],	
+"NCWBACKEND":[
+        "www-llm-token-generator-ncw"
+    ],	
+"SOCKFILE": "/data/apps/haproxy/haproxy_sock",
+"DIRECTORY": "/home/oosuser/deployment-scripts/scripts"
+
+}
