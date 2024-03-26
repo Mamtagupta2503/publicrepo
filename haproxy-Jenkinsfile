@@ -1,6 +1,7 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
+def haproxyserversfromparam = params.backend_server
 def publishresults=''
 def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
@@ -116,16 +117,31 @@ pipeline {
 							def backend = serverdetails.BACKEND
 							def sockfileloc = serverdetails.SOCKFILE
 							def server
-
-							if(datacenter =='NCE'){
-								server = nceserver
-								println "NCE server are: " + server
+							def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
+							
+							
+							 if(application =='ALL' && datacenter =='NCE'){
+                                    api = allapis
+                                    println "api selected from serviceability.json: " + api
+                                }
+                                else {
+                                    api = apiparamaterarray
+                                    println "api selected from job parameter: " + api
+                                }
+								
+							if(application =='ALL') {
+								if(datacenter =='NCE'){
+									server = nceserver
+									println "NCE server are: " + server
+								}
+								else if(datacenter =='NCW'){
+									server = ncwserver
+									println "NCW server are: " + server
+								}
 							}
-							else if(datacenter =='NCW'){
-								server = ncwserver
-								println "NCW server are: " + server
-
-							}
+							else 
+								server = haproxyserversfromparamArray
+							
 							def result =performaction(haproxyservers, backend, server, action, sockfileloc )							
 							publishresults = publishresults + "smartsheet: " + result+ "\n"
 
