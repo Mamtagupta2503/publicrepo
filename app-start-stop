@@ -31,7 +31,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application api-aem-kafka-producer"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/api-aem-kafka-producer.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/api-aem-kafka-producer.json'
+								def serverdetails = readJSON file: 'api-aem-kafka-producer.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
                                 def directory = serverdetails.DIRECTORY
@@ -57,7 +58,7 @@ pipeline {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "${action} on server ${s}" 
                                     try{
-                                        sh "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'"
+                                        //sh "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'"
                                     }catch(Exception e) 
                                     {
                                         println "******** ERROR ********"+e
@@ -90,7 +91,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application Serviceability"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/serviceability.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/serviceability.json'
+								def serverdetails = readJSON file: 'serviceability.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
                                 def allapis= serverdetails.API
@@ -128,7 +130,7 @@ pipeline {
                                     {
                                         echo "${action} ${a} on server ${s}" 
                                         try{
-                                            sh "$SSH_OPTION sudo su - oosuser  ${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh"
+                                            //sh "$SSH_OPTION sudo su - oosuser  ${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh"
                                         }catch(Exception e) 
                                         {
                                             println "******** ERROR ********"+e
@@ -160,7 +162,8 @@ pipeline {
                         script{
                             try{    
                                 println "Performing "+ action +" on application smartsheet"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/smartsheet.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/smartsheet.json'
+								def serverdetails = readJSON file: 'smartsheet.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
                                 def server
@@ -194,7 +197,7 @@ pipeline {
                                     for(a in api) {
                                         echo "${action} ${a} on server ${s}"
                                         try{    
-                                            sh "$SSH_OPTION sudo su - oosuser  ${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh"
+                                           // sh "$SSH_OPTION sudo su - oosuser  ${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh"
                                         }catch(Exception e) 
                                         {    
                                             println "******** ERROR ********"+e
@@ -226,7 +229,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application payment-ui"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/payment-ui.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/payment-ui.json'
+								def serverdetails = readJSON file: 'payment-ui.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
 								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
@@ -251,7 +255,7 @@ pipeline {
                                     echo "${action} httpd on server ${s}" 
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     try{
-                                    sh "$SSH_OPTION sudo service httpd ${action}" 
+                                    //sh "$SSH_OPTION sudo service httpd ${action}" 
                                     }catch(Exception e) 
                                     {
                                         println "******** ERROR ********"+e
@@ -282,7 +286,8 @@ pipeline {
                         script{
                             try{    
                                 println "Performing "+ action +" on application OOBServiceRouter"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/OOBServiceRouter.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/OOBServiceRouter.json'
+								def serverdetails = readJSON file: 'OOBServiceRouter.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
 								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
@@ -307,7 +312,7 @@ pipeline {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "${action} servicerouter on ${s}"
                                     try{
-                                        sh "$SSH_OPTION sudo service servicerouter ${action}"
+                                        //sh "$SSH_OPTION sudo service servicerouter ${action}"
                                     }catch(Exception e) 
                                     {
                                         println "******** ERROR ********"+e
@@ -338,7 +343,8 @@ pipeline {
                         script{
                             try{    
                                 println "Performing "+ action +" on application SALIServicerouter"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/SALIServicerouter.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/SALIServicerouter.json'
+								def serverdetails = readJSON file: 'SALIServicerouter.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
 								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
@@ -364,7 +370,7 @@ pipeline {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "${action} servicerouter on ${s}"
                                     try{
-                                        sh "$SSH_OPTION sudo service servicerouter ${action}"
+                                       // sh "$SSH_OPTION sudo service servicerouter ${action}"
                                     }catch(Exception e) 
                                     {
                                         println "******** ERROR ********"+e
@@ -395,7 +401,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application oob-api-mobilehandofftoken"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/oob-api-mobilehandofftoken.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/oob-api-mobilehandofftoken.json'
+								def serverdetails = readJSON file: 'oob-api-mobilehandofftoken.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
                                 def directory = serverdetails.DIRECTORY
@@ -422,7 +429,7 @@ pipeline {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "${action} api-mobilehandofftoken on server ${s}" 
                                     try{
-                                        sh "$SSH_OPTION sudo su - oosuser '${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh'"
+                                        //sh "$SSH_OPTION sudo su - oosuser '${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh'"
                                     }catch(Exception e) 
                                     {
                                         println "******** ERROR ********"+e
@@ -453,7 +460,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application api-llm-token-generator"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/llm-token-generator.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/llm-token-generator.json'
+								def serverdetails = readJSON file: 'llm-token-generator.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
                                 def directory = serverdetails.DIRECTORY
@@ -480,7 +488,7 @@ pipeline {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "${action} api-llm-token-generator on server ${s}" 
                                     try{
-                                        sh "$SSH_OPTION sudo su - oosuser '${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh'"
+                                       // sh "$SSH_OPTION sudo su - oosuser '${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh'"
                                     }catch(Exception e) 
                                     {
                                         println "******** ERROR ********"+e
@@ -511,7 +519,8 @@ pipeline {
                         script{
                             try{
                                 println "Performing "+ action +" on application mobiletokenui"
-                                def serverdetails = readJSON file: 'Patching_cycle_25_28/mobiletokenui.json'
+                                //def serverdetails = readJSON file: 'Patching_cycle_25_28/mobiletokenui.json'
+								def serverdetails = readJSON file: 'mobiletokenui.json'
                                 def nceserver = serverdetails.NCESERVERS
                                 def ncwserver = serverdetails.NCWSERVERS
 								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
@@ -536,7 +545,7 @@ pipeline {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "performing ${action} of httpd on $s"
                                     try{
-                                        sh "$SSH_OPTION sudo service httpd ${action}"
+                                        //sh "$SSH_OPTION sudo service httpd ${action}"
                                     }catch(Exception e) 
                                     {
                                         println "******** ERROR ********"+e
@@ -565,8 +574,8 @@ pipeline {
 				/*sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
 				message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n apiaemkafkaproducer: [${apiaemkafkaproducer}] \n Serviceability: [${Serviceability}] \n Smartsheet:[${Smartsheet}] \n PaymentUI: [${PaymentUI}] \n OOBServiceRouter: [${OOBServiceRouter}] \n SALIServicerouter: [${SALIServicerouter}] \n mobilehandofftoken: [${mobilehandofftoken}] \n llmtokengenerator: [${llmtokengenerator}] \n MobileTokenUI: [${MobileTokenUI}] ",
 				spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
-				spaceName: 'MamtaKT']]  */
-			}
+				spaceName: 'MamtaKT']]  
+			}*/
 
 		}
 }
