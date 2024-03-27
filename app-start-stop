@@ -50,7 +50,7 @@ pipeline {
                                 }
 								for(s in server) {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-                                    echo "${action} on server ${s}" 
+                                    println "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'" 
                                     try{
                                         //sh "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'"
 										
@@ -218,7 +218,7 @@ pipeline {
 									server = haproxyserversfromparamArray
 								}
                                 for(s in server) {
-                                    echo "${action} httpd on server ${s}" 
+                                    println "$SSH_OPTION sudo service httpd ${action}"  
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     try{
                                     //sh "$SSH_OPTION sudo service httpd ${action}" 
