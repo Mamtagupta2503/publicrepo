@@ -173,24 +173,9 @@ pipeline {
 									println "server selected from job parameter: " + server
                                     println "api selected from job input: " + api
                                 }
-
-                                for(s in server) {
-                                    def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-                                    for(a in api) {
-                                        echo "${action} ${a} on server ${s}"
-                                        try{    
-                                           // sh "$SSH_OPTION sudo su - oosuser  ${directory}/app-${action}.sh /data/apps/${a}/bin/app-config.sh"
-                                        }catch(Exception e) 
-                                        {    
-                                            println "******** ERROR ********"+e
-											Smartsheet ='Failed'
-                                            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
-                                                {
-                                                    sh "exit 1"
-                                                }
-                                            }
-                                        }    
-                                    }
+								def result = performaction(server, api, action, directory )
+								publishresults = publishresults + "smartsheet: " + result+ "\n"
+								
                             }catch(Exception e) {
                                 println "******** ERROR ********"+e
 								Smartsheet ='Failed'
@@ -406,8 +391,9 @@ pipeline {
 								{
 									server = haproxyserversfromparamArray	
 								}
-								
-                                for(s in server) {
+								def result = performaction(server, a, action, directory )
+								publishresults = publishresults + "oob-api-mobilehandofftoken: " + result+ "\n"
+                                /*for(s in server) {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "${action} api-mobilehandofftoken on server ${s}" 
                                     try{
@@ -421,7 +407,7 @@ pipeline {
                                             sh "exit 1"
                                         }
                                     }
-                                }
+                                }*/
                             }catch(Exception e) {
                                     println "******** ERROR ********"+e
 									mobilehandofftoken ='Failed'
@@ -466,7 +452,9 @@ pipeline {
 									server = haproxyserversfromparamArray	
 								}
 								
-                                for(s in server) {
+                                def result = performaction(server, a, action, directory )
+								publishresults = publishresults + "api-llm-token-generator: " + result+ "\n"
+								/*for(s in server) {
                                     def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
                                     echo "${action} api-llm-token-generator on server ${s}" 
                                     try{
@@ -480,7 +468,7 @@ pipeline {
                                             sh "exit 1"
                                         }
                                     }
-                                }
+                                }*/
                             }catch(Exception e) {
                                     println "******** ERROR ********"+e
 									llmtokengenerator ='Failed'
