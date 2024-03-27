@@ -219,7 +219,8 @@ pipeline {
 								}
                                 for(s in server) {
                                      
-                                    def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+                                    println mamta
+									def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
 									println "$SSH_OPTION sudo service httpd ${action}" 
                                     try{
                                     //sh "$SSH_OPTION sudo service httpd ${action}"
