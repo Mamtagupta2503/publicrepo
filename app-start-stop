@@ -37,7 +37,6 @@ pipeline {
                                 def ncwserver = serverdetails.NCWSERVERS
                                 def directory = serverdetails.DIRECTORY
 								def haproxyserversfromparamArray = Arrays.asList((haproxyserversfromparam).split(","))
-								def 
                                 def server
                          
                                 if(application =='All') {
