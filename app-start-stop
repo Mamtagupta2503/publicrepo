@@ -5,8 +5,6 @@ def apifromparameter =params.api
 def haproxyserversfromparam = params.server
 def publishresults='' 
 def apiaemkafkaproducer='Success'
-def PaymentUI ='Success'
-def MobileTokenUI ='Success'
 def cause = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 
 
@@ -47,31 +45,17 @@ pipeline {
 								else 
 								{	
 									server = haproxyserversfromparamArray
+									println "server selected from job parameter: " + server
                                 }
-								for(s in server) {
-                                    def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-                                    println "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'" 
-                                    try{
-                                        //sh "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'"
-										
-                                    }catch(Exception e) 
-                                    {
-                                        println "******** ERROR ********"+e
-                                        apiaemkafkaproducer ='Failed'
-										publishresults = publishresults + "api-aem-kafka-producer: " + apiaemkafkaproducer+ "\n"
-                                        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
-										{
-                                            sh "exit 1"
-                                        }
-                                    }
-                                }
-								apiaemkafkaproducer ='success'
-								publishresults = publishresults + "api-aem-kafka-producer: " + apiaemkafkaproducer+ "\n"
+								
+								def result = ActionAEMKafkaProducer(server,action,directory)
+								publishresults = publishresults + "api-aem-kafka-producer: " + result+ "\n"
+
                             }catch(Exception e) 
                             {
                                 println "******** ERROR ********"+e
-                                apiaemkafkaproducer ='Failed'
-								publishresults = publishresults + "api-aem-kafka-producer: " + apiaemkafkaproducer+ "\n"
+                                result ='Failure'
+								publishresults = publishresults + "api-aem-kafka-producer: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 								{
                                     sh "exit 1"
@@ -120,12 +104,13 @@ pipeline {
 									println "server selected from job parameter: " + server
                                     println "api selected from job parameter: " + api
                                 }
-								def result = performactionmultipleapi(server, api, action, directory )
+								def result = ActionOnMultpileApi(server, api, action, directory )
 								publishresults = publishresults + "serviceability: " + result+ "\n"
 								
                             }catch(Exception e) {
                                 println "******** ERROR ********"+e
-								Serviceability ='Failed'
+								result ='Failure'
+								publishresults = publishresults + "serviceability: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
@@ -170,14 +155,15 @@ pipeline {
                                     api = apiparamaterarray
 									server = haproxyserversfromparamArray
 									println "server selected from job parameter: " + server
-                                    println "api selected from job input: " + api
+                                    println "api selected from job parameter: " + api
                                 }
-								def result = performactionmultipleapi(server, api, action, directory )
+								def result = ActionOnMultpileApi(server, api, action, directory )
 								publishresults = publishresults + "smartsheet: " + result+ "\n"
 								
                             }catch(Exception e) {
                                 println "******** ERROR ********"+e
-								Smartsheet ='Failed'
+								result ='Failure'
+								publishresults = publishresults + "smartsheet: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
@@ -216,34 +202,16 @@ pipeline {
 								else 
 								{	
 									server = haproxyserversfromparamArray
+									println "server selected from job parameter: " + server
 								}
-                                for(s in server) {
-                                     
-                                    println mamta
-									def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-									println "$SSH_OPTION sudo service httpd ${action}" 
-                                    try{
-                                    //sh "$SSH_OPTION sudo service httpd ${action}"
-									PaymentUI ='success'									
-										
-                                    }catch(Exception e) 
-                                    {
-                                        println "******** ERROR ********"+e
-										PaymentUI='Failed'
-										publishresults = publishresults + "payment-ui: " + PaymentUI+ "\n"
-                                        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
-                                        {
-                                            sh "exit 1"
-                                        }
-                                    }
-                                }
+                                
+								def result =ActionHttpd(server,action)							
+								publishresults = publishresults + "payment-ui: " + result+ "\n"
 								
-								publishresults = publishresults + "payment-ui: " + PaymentUI+ "\n"
                             }catch(Exception e) {
-                                println "******** ERROR ********"+e
-								publishresults = publishresults + "payment-ui: " + PaymentUI+ "\n"
-								PaymentUI='Failed'
-                                   catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								result ='Failure'
+								publishresults = publishresults + "payment-ui: " + result+ "\n"
+							    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
                             }
@@ -279,15 +247,17 @@ pipeline {
 								}
 								else 
 								{
-								server = haproxyserversfromparamArray	
+								server = haproxyserversfromparamArray
+								println "server selected from job parameter: " + server	
 								}
 								
-								def result = performactiononservicerouter(server,action)
+								def result = ActionOnServiceRouter(server,action)
 								publishresults = publishresults + "OOBServiceRouter: " + result+ "\n"
                                     
                             }catch(Exception e) {
                                 println "******** ERROR ********"+e
-								OOBServiceRouter ='Failed'
+								result ='Failure'
+								publishresults = publishresults + "OOBServiceRouter: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
@@ -324,15 +294,17 @@ pipeline {
 								}	
 								else 
 								{
-									server = haproxyserversfromparamArray	
+									server = haproxyserversfromparamArray
+									println "server selected from job parameter: " + server	
 								}
 								
-								def result = performactiononservicerouter(server,action)
+								def result = ActionOnServiceRouter(server,action)
 								publishresults = publishresults + "SALIServicerouter: " + result+ "\n"
                                  
                             }catch(Exception e) {
                                 println "******** ERROR ********"+e
-								SALIServicerouter ='Failed'
+								result ='Failure'
+								publishresults = publishresults + "SALIServicerouter: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
@@ -371,14 +343,16 @@ pipeline {
 								}
 								else 
 								{
-									server = haproxyserversfromparamArray	
+									server = haproxyserversfromparamArray
+									println "server selected from job parameter: " + server	
 								}
-								def result = performactionsingleapi(server, a, action, directory )
+								def result = ActionOnSingleApi(server, a, action, directory )
 								publishresults = publishresults + "oob-api-mobilehandofftoken: " + result+ "\n"
                                 
                             }catch(Exception e) {
                                     println "******** ERROR ********"+e
-									mobilehandofftoken ='Failed'
+									result ='Failure'
+									publishresults = publishresults + "oob-api-mobilehandofftoken: " + result+ "\n"
                                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
@@ -417,15 +391,17 @@ pipeline {
 								}	
 								else 
 								{
-									server = haproxyserversfromparamArray	
+									server = haproxyserversfromparamArray
+									println "server selected from job parameter: " + server	
 								}
 								
-                                def result = performactionsingleapi(server, a, action, directory )
+                                def result = ActionOnSingleApi(server, a, action, directory )
 								publishresults = publishresults + "api-llm-token-generator: " + result+ "\n"
 								
                             }catch(Exception e) {
                                     println "******** ERROR ********"+e
-									llmtokengenerator ='Failed'
+									result ='Failure'
+									publishresults = publishresults + "api-llm-token-generator: " + result+ "\n"
                                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
@@ -462,32 +438,16 @@ pipeline {
 								}
 								else 
 								{
-									server = haproxyserversfromparamArray	
+									server = haproxyserversfromparamArray
+									println "server selected from job parameter: " + server									
 								}
 								
-                                for(s in server) {
-                                    def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
-                                    println "$SSH_OPTION sudo service httpd ${action}"
-									
-                                    try{
-                                        //sh "$SSH_OPTION sudo service httpd ${action}"
-                                    }catch(Exception e) 
-                                    {
-                                        println "******** ERROR ********"+e
-										MobileTokenUI ='Failed'
-										publishresults = publishresults + "mobiletokenui: " + MobileTokenUI+ "\n"
-                                        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
-                                        {
-                                            sh "exit 1"
-                                        }
-                                    }
-                                }
-								MobileTokenUI ='success'
-								publishresults = publishresults + "mobiletokenui: " + MobileTokenUI+ "\n"
+								def result =ActionHttpd(server,action)							
+								publishresults = publishresults + "mobiletokenui: " + result+ "\n"
+								
                             }catch(Exception e) {
-                                println "******** ERROR ********"+e
-								MobileTokenUI ='Failed'
-								publishresults = publishresults + "mobiletokenui: " + MobileTokenUI+ "\n"
+								result ='Failure'
+								publishresults = publishresults + "mobiletokenui: " + result+ "\n"
                                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                                     sh "exit 1"
                                 }
@@ -509,7 +469,7 @@ pipeline {
 			}
 		} 
 }
-def performactionmultipleapi(Object server, Object api, String action, Object directory ){
+def ActionOnMultpileApi(Object server, Object api, String action, Object directory ){
 	def result ='Success'
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
@@ -521,7 +481,7 @@ def performactionmultipleapi(Object server, Object api, String action, Object di
 			}catch(Exception e) 
 			{
 				println "******** ERROR ********"+e
-				Serviceability ='Failed'
+				result ='Failure'
 				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 				{
 				sh "exit 1"
@@ -531,7 +491,7 @@ def performactionmultipleapi(Object server, Object api, String action, Object di
 	}
 	return result
 }
-def performactionsingleapi(Object server, String api, String action, Object directory ){
+def ActionOnSingleApi(Object server, String api, String action, Object directory ){
 	def result ='Success'
 	for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
@@ -541,7 +501,7 @@ def performactionsingleapi(Object server, String api, String action, Object dire
 		}catch(Exception e) 
 		{
 			println "******** ERROR ********"+e
-			mobilehandofftoken ='Failed'
+			result ='Failure'
 			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 			{
 				sh "exit 1"
@@ -550,7 +510,7 @@ def performactionsingleapi(Object server, String api, String action, Object dire
 	}
 	return result
 }
-def performactiononservicerouter(Object server, String action ){
+def ActionOnServiceRouter(Object server, String action ){
 	def result ='Success'
 		for(s in server) {
 		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
@@ -560,7 +520,7 @@ def performactiononservicerouter(Object server, String action ){
 		}catch(Exception e) 
 		{
 			println "******** ERROR ********"+e
-			SALIServicerouter ='Failed'
+			result ='Failure'
 			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
 			{
 				sh "exit 1"
@@ -569,3 +529,42 @@ def performactiononservicerouter(Object server, String action ){
 	} 
 	return result
 }
+def ActionHttpd(Object server, String action ){
+	def result ='Success'
+		for(s in server) {
+			def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+			println "$SSH_OPTION sudo service httpd ${action}" 
+			try{
+			//sh "$SSH_OPTION sudo service httpd ${action}"			
+			}catch(Exception e) 
+			{
+				result='Failure'
+				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+				{
+					sh "exit 1"
+				}
+			}
+	}
+	return result
+}
+def ActionAEMKafkaProducer(Object server, String action,Object directory ){
+	def result ='Success'
+	for(s in server) {
+		def SSH_OPTION="ssh -q jenkins_worker@${s} -o StrictHostKeyChecking=no"
+		println "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'" 
+		try{
+			//sh "$SSH_OPTION sudo su - oosuser  '${directory}/bin/app-${action}.sh'"
+			
+		}catch(Exception e) 
+		{
+			println "******** ERROR ********"+e
+			result ='Failure'
+			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') 
+			{
+				sh "exit 1"
+			}
+		}
+	}
+	return result
+}
+aem-kafka-producer
