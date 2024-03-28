@@ -7,10 +7,10 @@
     ],
 	
     "NCWSERVERS": [
-		"sr7-prod.nce.webapps.rr.com",
-		"sr8-prod.nce.webapps.rr.com",
-		"sr9-prod.nce.webapps.rr.com",
-		"sr10-prod.nce.webapps.rr.com"
+		"sr7-prod.ncw.webapps.rr.com",
+		"sr8-prod.ncw.webapps.rr.com",
+		"sr9-prod.ncw.webapps.rr.com",
+		"sr10-prod.ncw.webapps.rr.com"
     ],
 	
     "BACKEND": [
