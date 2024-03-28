@@ -4,8 +4,8 @@
         "api2-prod.nce.webapps.rr.com"
     ],
     "NCWSERVERS": [
-		"api1-prod.nce.webapps.rr.com",
-        "api2-prod.nce.webapps.rr.com"    
+		"api1-prod.ncw.webapps.rr.com",
+        "api2-prod.ncw.webapps.rr.com"    
 	],
     
 	"DIRECTORY": "/data/apps/api-aem-kafka-producer"
