@@ -461,7 +461,8 @@ pipeline {
     	post {
 
 			always {
-			println publishresults	
+			println publishresults
+			println ${env.BUILD_NUMBER}
 			/*	sparkSend credentialsId: 'UnifiedBuyflowSparkBot', 
 				message: " Job URL: ${env.JOB_URL} \n User: ${cause.userName} \n Application: [${Application}] \n Action: [${action}] \n DC: [${datacenter}] \n Build status: [${currentBuild.currentResult}] \n apiaemkafkaproducer: [${apiaemkafkaproducer}] \n Serviceability: [${Serviceability}] \n Smartsheet:[${Smartsheet}] \n PaymentUI: [${PaymentUI}] \n OOBServiceRouter: [${OOBServiceRouter}] \n SALIServicerouter: [${SALIServicerouter}] \n mobilehandofftoken: [${mobilehandofftoken}] \n llmtokengenerator: [${llmtokengenerator}] \n MobileTokenUI: [${MobileTokenUI}] ",
 				spaceList: [[spaceId: '21f9d0e0-92b5-11ee-a0f4-6d1d3af5a51f', 
