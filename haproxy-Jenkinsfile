@@ -25,7 +25,7 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application serviceability"								
-								def serverdetails = readJSON file: 'Patching_cycle_25_28/serviceability.json'
+								def serverdetails = readJSON file: 'serviceability.json'
 								def haproxyservers = serverdetails.HAPROXY_SERVERS 
 								def nceserver = serverdetails.HA_NCE_SERVERS
 								def ncwserver = serverdetails.HA_NCW_SERVERS
@@ -74,7 +74,7 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application llm-token-generator"								
-								def serverdetails = readJSON file: 'Patching_cycle_25_28/llm-token-generator.json'
+								def serverdetails = readJSON file: 'llm-token-generator.json'
 								def haproxyservers = serverdetails.HAPROXY_SERVERS 
 								def nceserver = serverdetails.NCESERVERS
 								def ncwserver = serverdetails.NCWSERVERS
@@ -142,7 +142,7 @@ pipeline {
 					script{
 						try {
 							println "Performing "+ action +" on application smartsheet"	
-							def serverdetails = readJSON file: 'Patching_cycle_25_28/smartsheet.json'
+							def serverdetails = readJSON file: 'smartsheet.json'
 							def haproxyservers = serverdetails.HAPROXY_SERVERS 
 							def nceserver = serverdetails.NCESERVERS
 							def ncwserver = serverdetails.NCWSERVERS
@@ -193,7 +193,7 @@ pipeline {
 					script{
 						try {
 						println "Performing "+ action +" on application PaymentUI"
-						def serverdetails = readJSON file: 'Patching_cycle_25_28/payment-ui.json'
+						def serverdetails = readJSON file: 'payment-ui.json'
 						def haproxyservers = serverdetails.HAPROXY_SERVERS 
 						def nceserver = serverdetails.NCESERVERS
 						def ncwserver = serverdetails.NCWSERVERS
@@ -242,7 +242,7 @@ pipeline {
 					script{
 						println "Performing "+ action +" on application OOBServiceRouter"
 						try {  
-						def serverdetails = readJSON file: 'Patching_cycle_25_28/OOBServiceRouter.json'
+						def serverdetails = readJSON file: 'OOBServiceRouter.json'
 						def haproxyservers = serverdetails.HAPROXY_SERVERS 
 						def nceserver = serverdetails.NCESERVERS
 						def ncwserver = serverdetails.NCWSERVERS
@@ -291,7 +291,7 @@ pipeline {
 					script{
 						try {  
 						
-						def serverdetails = readJSON file: 'Patching_cycle_25_28/mobiletokenui.json'
+						def serverdetails = readJSON file: 'mobiletokenui.json'
 						def haproxyservers = serverdetails.HAPROXY_SERVERS 
 						def nceserver = serverdetails.NCESERVERS
 						def ncwserver = serverdetails.NCWSERVERS
