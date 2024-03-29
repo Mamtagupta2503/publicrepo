@@ -1,7 +1,7 @@
 def application =params.Application
 def action =params.Action
 def datacenter =params.DC
-def backendFromParam =param.backend
+def backendFromParam =params.backend
 def haproxyserversfromparam = params.backend_server
 def publishresults=''
 
