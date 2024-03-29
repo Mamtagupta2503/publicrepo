@@ -25,7 +25,7 @@ pipeline {
 						script{
 							try {
 								println "Performing "+ action +" on application serviceability"								
-								def serverdetails = readJSON file: 'serviceability.json'
+								def serverdetails = readJSON file: 'Patching_cycle_25_28/serviceability.json'
 								def haproxyservers = serverdetails.HAPROXY_SERVERS 
 								def nceserver = serverdetails.HA_NCE_SERVERS
 								def ncwserver = serverdetails.HA_NCW_SERVERS
@@ -72,16 +72,16 @@ pipeline {
 					}
 					steps {
 						script{
-							//try {
+							try {
 								println "Performing "+ action +" on application llm-token-generator"								
-								def serverdetails = readJSON file: 'llm-token-generator.json'
+								def serverdetails = readJSON file: 'Patching_cycle_25_28/llm-token-generator.json'
 								def haproxyservers = serverdetails.HAPROXY_SERVERS 
 								def nceserver = serverdetails.NCESERVERS
 								def ncwserver = serverdetails.NCWSERVERS
 								def ncebackend = serverdetails.NCEBACKEND
 								def ncwbackend = serverdetails.NCWBACKEND
 								def sockfileloc = serverdetails.SOCKFILE
-								def backendServersFromParamArray = Arrays.asList((haproxyserversfromparam).split(","))
+								def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
 								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 								def server
 								def backend
@@ -122,13 +122,13 @@ pipeline {
 								PublishResults = PublishResults + "llm-token-generator: " + result+ "\n"
 								
 								
-							/*}catch(Exception e) {
+							}catch(Exception e) {
 								result ='Failure'
 								PublishResults = PublishResults + "llm-token-generator: " + result+ "\n"
 								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
 								sh "exit 1"
 								}
-							} */
+							} 
 						}
 					}      
 				}
@@ -142,14 +142,14 @@ pipeline {
 					script{
 						try {
 							println "Performing "+ action +" on application smartsheet"	
-							def serverdetails = readJSON file: 'smartsheet.json'
+							def serverdetails = readJSON file: 'Patching_cycle_25_28/smartsheet.json'
 							def haproxyservers = serverdetails.HAPROXY_SERVERS 
 							def nceserver = serverdetails.NCESERVERS
 							def ncwserver = serverdetails.NCWSERVERS
 							def backend = serverdetails.BACKEND
 							
 							def sockfileloc = serverdetails.SOCKFILE
-							def backendServersFromParamArray = Arrays.asList((haproxyserversfromparam).split(","))
+							def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
 							def backendFromParamArray =Arrays.asList((backendFromParam).split(","))
 							def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
 							def server
@@ -193,14 +193,14 @@ pipeline {
 					script{
 						try {
 						println "Performing "+ action +" on application PaymentUI"
-						def serverdetails = readJSON file: 'payment-ui.json'
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/payment-ui.json'
 						def haproxyservers = serverdetails.HAPROXY_SERVERS 
 						def nceserver = serverdetails.NCESERVERS
 						def ncwserver = serverdetails.NCWSERVERS
 						def backend = serverdetails.BACKEND
 						def sockfileloc = serverdetails.SOCKFILE
 						def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
-						def backendServersFromParamArray = Arrays.asList((haproxyserversfromparam).split(","))
+						def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
 						def server
 
 						if(application =='ALL') {
@@ -242,14 +242,14 @@ pipeline {
 					script{
 						println "Performing "+ action +" on application OOBServiceRouter"
 						try {  
-						def serverdetails = readJSON file: 'OOBServiceRouter.json'
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/OOBServiceRouter.json'
 						def haproxyservers = serverdetails.HAPROXY_SERVERS 
 						def nceserver = serverdetails.NCESERVERS
 						def ncwserver = serverdetails.NCWSERVERS
 						def backend = serverdetails.BACKEND
 						def sockfileloc = serverdetails.SOCKFILE
 						def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
-						def backendServersFromParamArray = Arrays.asList((haproxyserversfromparam).split(","))
+						def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
 						def server
 
 						if(application =='ALL') {
@@ -291,14 +291,14 @@ pipeline {
 					script{
 						try {  
 						
-						def serverdetails = readJSON file: 'mobiletokenui.json'
+						def serverdetails = readJSON file: 'Patching_cycle_25_28/mobiletokenui.json'
 						def haproxyservers = serverdetails.HAPROXY_SERVERS 
 						def nceserver = serverdetails.NCESERVERS
 						def ncwserver = serverdetails.NCWSERVERS
 						def backend = serverdetails.BACKEND
 						def sockfileloc = serverdetails.SOCKFILE
 						def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
-						def backendServersFromParamArray = Arrays.asList((haproxyserversfromparam).split(","))
+						def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
 						def server
 
 						if(application =='ALL') {
