@@ -1,4 +1,10 @@
 {
+    "HAPROXY_SERVERS": [
+		"api-haproxy1-prod.nce.webapps.rr.com",
+		"api-haproxy2-prod.nce.webapps.rr.com",
+		"api-haproxy1-prod.ncw.webapps.rr.com",
+		"api-haproxy2-prod.ncw.webapps.rr.com"    
+		],
     "NCESERVERS": [
         "api1-prod.nce.webapps.rr.com",
         "api2-prod.nce.webapps.rr.com"
@@ -7,6 +13,9 @@
 		"api1-prod.ncw.webapps.rr.com",
         "api2-prod.ncw.webapps.rr.com"    
 	],
-    
+    "BACKEND": [
+        "www-api-aem-kafka"	
+    ],
+    "SOCKFILE": "/data/apps/haproxy/haproxy_sock",
 	"DIRECTORY": "/data/apps/api-aem-kafka-producer"
 }
