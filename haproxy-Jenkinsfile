@@ -15,6 +15,55 @@ pipeline {
 
 		stage('Parallel execution') {
 			parallel {
+				stage('api-aem-kafka-producer') {
+					when {
+						expression {
+						'api-aem-kafka-producer' in application||'ALL' in application
+						}
+					}
+					steps {
+						script{
+							try {
+								println "Performing "+ action +" on application api-aem-kafka-producer"								
+								def serverdetails = readJSON file: 'api-aem-kafka-producer.json'
+								def haproxyservers = serverdetails.HAPROXY_SERVERS 
+								def nceserver = serverdetails.NCESERVERS
+								def ncwserver = serverdetails.NCWSERVERS
+								def backend = serverdetails.BACKEND
+								def sockfileloc = serverdetails.SOCKFILE
+								def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
+								def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
+								def server
+
+								if(application =='ALL') {
+									if(datacenter =='NCE'){
+										server = nceserver
+										println "NCE server are: " + server
+									}
+									else if(datacenter =='NCW'){
+										server = ncwserver
+										println "NCW server are: " + server
+									}
+								}
+								else 
+								{	
+									server = backendServersFromParamArray
+									haproxyservers = haproxyFromParamArray
+								}
+								
+								def result =performAction(haproxyservers, backend, server, action, sockfileloc )							
+								PublishResults = PublishResults + "api-aem-kafka-producer: " + result+ "\n"
+											
+							}catch(Exception e) {
+								result ='Failure'
+								PublishResults = PublishResults + "api-aem-kafka-producer: " + result+ "\n"
+								catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+								sh "exit 1"
+								}
+							}
+						}
+					}      
+				}
 				stage('serviceability') {
 					when {
 						expression {
