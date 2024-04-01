@@ -347,6 +347,7 @@ pipeline {
 						def backend = serverdetails.BACKEND
 						def sockfileloc = serverdetails.SOCKFILE
 						def haproxyFromParamArray =Arrays.asList((haproxyFromParam).split(","))
+						def backendFromParamArray =Arrays.asList((backendFromParam).split(","))
 						def backendServersFromParamArray = Arrays.asList((backendServersFromParam).split(","))
 						def server
 
@@ -363,6 +364,7 @@ pipeline {
 						else 
 						{
 							server = backendServersFromParamArray
+							backend = backendFromParamArray
 							haproxyservers = haproxyFromParamArray
 						}
 						def result =performAction(haproxyservers, backend, server, action, sockfileloc )							
